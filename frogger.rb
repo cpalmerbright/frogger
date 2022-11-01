@@ -34,16 +34,21 @@ update do
   if gamestate == 'playing'
     taxis.each do |taxi|
       taxi.x = taxi.x + 2
+      if (taxi.y == frog.y && frog.x < taxi.x + taxi.width && frog.x + frog.width > taxi.x)
+        gamestate = 'lost'
+      end
     end
     if tick % 120 == 0
       taxis << Rectangle.new(width: tilesize * 2, height: tilesize, x: -tilesize * 2, y: tilesize * 6, color: 'yellow')
     end
     if frog.y == 0
       gamestate = 'won'
-    end 
+    end
     tick = tick + 1
   elsif gamestate == 'won' && message.nil?
-    message = Text.new('You won!', x: tilesize * 3, y: tilesize * 8, size: 30, color: 'purple')
+    message = Text.new('You won!', x: tilesize * 3, y: tilesize * 4, size: 40, color: 'purple')
+  elsif gamestate == 'lost' && message.nil?
+    message = Text.new('Splat!', x: tilesize * 3, y: tilesize * 4, size: 50, color: 'red')
   end
 end
 
